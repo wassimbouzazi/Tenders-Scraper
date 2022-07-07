@@ -1,0 +1,21 @@
+steps:
+# Build the container image
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/tenders-284621/tenders-scraper:$COMMIT_SHA', '.']
+# Push the container image to Container Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/tenders-284621/tenders-scraper:$COMMIT_SHA']
+# Deploy container image to Cloud Run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args:
+  - 'run'
+  - 'deploy'
+  - 'tenders-scraper'
+  - '--image'
+  - 'gcr.io/tenders-284621/tenders-scraper:$COMMIT_SHA'
+  - '--region'
+  - 'europe-west2'
+  - '--allow-unauthenticated'
+images:
+ - 'gcr.io/tenders-284621/tenders-scraper:$COMMIT_SHA'
