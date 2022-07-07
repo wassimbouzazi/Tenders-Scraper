@@ -9,7 +9,7 @@ app = Flask(__name__)
 # GCP Cloud Run requires that the app listens at "/" while it is working, to respond to health checks
 @app.route("/")
 def main():
-    return "Works baba"
+    return "Works"
 
 # Scans the website for new notices to schedule them for later scraping
 @app.route("/scan")
